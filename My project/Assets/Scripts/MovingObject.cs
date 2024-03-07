@@ -156,7 +156,7 @@ public class MovingObject : MonoBehaviour
 
     void ResetJumpFlag()
     {
-        canJump = false;
+        canJump = true;
     }
 
     private void OnCollisionStay(Collision collision)

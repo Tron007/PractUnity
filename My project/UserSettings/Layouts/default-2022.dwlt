@@ -980,8 +980,8 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 60}
-    m_SelectedIDs: ba5a0000
-    m_LastClickedID: 23226
+    m_SelectedIDs: b85a0000
+    m_LastClickedID: 23224
     m_ExpandedIDs: 00000000a85a0000aa5a0000ac5a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
