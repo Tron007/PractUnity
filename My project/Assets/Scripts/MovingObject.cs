@@ -26,14 +26,8 @@ public class MovingObject : MonoBehaviour
         originalHeight = _rb.transform.localScale.y;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        float horizontalSpeed = Input.GetAxis("Horizontal") * GetEffectiveSpeed() * Time.fixedDeltaTime;
-        float verticalSpeed = Input.GetAxis("Vertical") * GetEffectiveSpeed() * Time.fixedDeltaTime;
-        _rb.velocity = transform.TransformDirection(new Vector3(horizontalSpeed, _rb.velocity.y, verticalSpeed));
-
-        MoveCamera();
-
         if (Input.GetKeyDown(KeyCode.C) && !isCameraSwitching)
         {
             SwitchCamera();
@@ -50,6 +44,17 @@ public class MovingObject : MonoBehaviour
         {
             TryJump();
         }
+    }
+
+
+    private void FixedUpdate()
+    {
+        float horizontalSpeed = Input.GetAxis("Horizontal") * GetEffectiveSpeed() * Time.fixedDeltaTime;
+        float verticalSpeed = Input.GetAxis("Vertical") * GetEffectiveSpeed() * Time.fixedDeltaTime;
+        _rb.velocity = transform.TransformDirection(new Vector3(horizontalSpeed, _rb.velocity.y, verticalSpeed));
+
+        MoveCamera();
+
     }
 
     // Получение эффективной скорости в зависимости от состояния приседания и бега
