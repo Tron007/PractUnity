@@ -39,11 +39,13 @@ public class MovingObject : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
         {
             ToggleCrouch();
+            Debug.Log("Crouching");
         }
 
         if (Input.GetButtonDown("Jump"))
         {
             TryJump();
+            Debug.Log("Jump");
         }
     }
 
