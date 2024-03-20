@@ -91,12 +91,20 @@ public class MovingObject : MonoBehaviour
         }
         else
         {
+            // Вращение камеры вокруг персонажа
+            transform.Rotate(Vector3.up * mouseX);
+
+            float newRotationX = mainCamera.transform.eulerAngles.x - mouseY;
+            mainCamera.transform.rotation = Quaternion.Euler(newRotationX, transform.eulerAngles.y, 0f);
+
+            // Позиционирование камеры
             Vector3 targetPosition = transform.position - transform.forward * 5f + Vector3.up * GetCameraHeight();
             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * smoothness);
 
             mainCamera.transform.LookAt(transform.position + transform.forward * 5f);
         }
     }
+
 
     float GetCameraHeight()
     {

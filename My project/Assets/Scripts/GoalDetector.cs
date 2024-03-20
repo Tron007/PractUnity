@@ -2,23 +2,21 @@ using UnityEngine;
 
 public class GoalDetector : MonoBehaviour
 {
-    public GameObject ballPrefab; // ѕрефаб м€ча
-    public int maxGoals = 3; // ћаксимальное количество забитых голов, после которых игра завершаетс€
-    public Color ballColorOnGameOver = Color.red; // ÷вет м€ча после завершени€ игры
+    [SerializeField] private GameObject ballPrefab; // ѕрефаб м€ча
+    [SerializeField] private int maxGoals = 3; // ћаксимальное количество забитых голов, после которых игра завершаетс€
+    [SerializeField] private Color ballColorOnGameOver = Color.red; // ÷вет м€ча после завершени€ игры
 
     private static Vector3 initialBallPosition; // »значальна€ позици€ м€ча
+    private GameObject lastBall; // ѕоследний созданный м€ч
     private int goalsScored = 0; //  оличество забитых голов
     private bool gameOver = false; // ‘лаг дл€ отслеживани€ завершени€ игры
-    private GameObject lastBall; // ѕоследний созданный м€ч
+    private SoccerNPC soccerNPC; // —сылка на скрипт SoccerNPC
 
     private void Start()
     {
-        // ≈сли изначальна€ позици€ еще не была установлена, устанавливаем ее
-        if (initialBallPosition == Vector3.zero)
-        {
-            // «апоминаем изначальную позицию первого м€ча
-            initialBallPosition = GameObject.FindGameObjectWithTag("Ball").transform.position;
-        }
+        // «апоминаем изначальную позицию первого м€ча
+        initialBallPosition = GameObject.FindGameObjectWithTag("Ball").transform.position;
+        soccerNPC = FindObjectOfType<SoccerNPC>(); // Ќаходим скрипт SoccerNPC
     }
 
     private void OnTriggerEnter(Collider other)
@@ -27,11 +25,18 @@ public class GoalDetector : MonoBehaviour
         {
             goalsScored++; // ”величиваем счетчик забитых голов
 
-            // ѕомечаем м€ч как забитый, чтобы он не считалс€ дл€ следующих голов
-            other.gameObject.tag = "ScoredBall";
+            // ”ничтожаем предыдущий м€ч
+            Destroy(other.gameObject);
 
-            // —павним новый м€ч на изначальной позиции первого м€ча
+            // —павним новый м€ч на изначальной позиции предыдущего м€ча
             lastBall = Instantiate(ballPrefab, initialBallPosition, Quaternion.identity);
+
+            // ќбновл€ем позицию м€ча в скрипте SoccerNPC
+            if (soccerNPC != null)
+            {
+                soccerNPC.ball = lastBall.transform;
+                soccerNPC.DribbleBall(); // Ќачинаем двигатьс€ к новому м€чу
+            }
 
             if (goalsScored >= maxGoals)
             {
@@ -48,5 +53,10 @@ public class GoalDetector : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool IsGameOver()
+    {
+        return gameOver;
     }
 }
